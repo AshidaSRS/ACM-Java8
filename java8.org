@@ -83,7 +83,7 @@ Collections.sort(people,
 ** Java 8
 #+BEGIN_SRC java 
  List<Person> people = loadPeople();
- people.sort(p1, p2) -> p1.name.compareTo(p2.name));
+ people.sort((p1, p2) -> p1.name.compareTo(p2.name));
  #+END_SRC
 
 ** lambdas, buenas prácticas!
@@ -93,19 +93,19 @@ Collections.sort(people,
 - No usar bloques!
 ** Más ejemplos!
 #+BEGIN_SRC java 
-(int a, int b) ­>  a + b
+(int a, int b) ­->  a + b
 #+END_SRC
 #+BEGIN_SRC java 
-(int a) ­> a +  1
+(int a) ­-> a +  1
 #+END_SRC
 #+BEGIN_SRC java 
-(int  a, int b) ­> { System.out.println(a + b);  return a + b; } 
+(int  a, int b) ­-> { System.out.println(a + b);  return a + b; } 
 #+END_SRC
 #+BEGIN_SRC java 
-() ­> new ArrayList()
+() ­-> new ArrayList()
 #+END_SRC
 * streams?
-** Que son?
+** Qué son?
 Un Stream es un modo de aplicar transformaciones a una secuencia de
 elementos, por ejemplo una lista o datos a traves de la red (GET
 HTTP), aplicando todas las transformaciones a la vez, elemento a
@@ -264,7 +264,7 @@ int count = cars.stream()
  - forEach
  - map
  - filter
-*@@html:<font color = "cyan">@@limit@@html:</font>@@*
+*@@html:<font color = "cyan">@@collect@@html:</font>@@*
  - limit
  - sorted
  - flatMap
@@ -291,6 +291,7 @@ List<Integer> squareNumbers = numbers
 ** Funciones!
  - forEach
  - map
+ - collect
 *@@html:<font color = "cyan">@@limit@@html:</font>@@*
  - sorted
  - filter
