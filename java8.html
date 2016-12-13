@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Java 8 vs Java</title>
+<meta name="author" content="(Ashida)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="file:////home/ashida/git/reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="file:////home/ashida/git/reveal.js/css/theme/league.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'file:////home/ashida/git/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="EmacsFTW.">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1>Java 8 vs Java</h1><h2>Ashida<h2><h3><a href="mailto:ashida.shin@gmail.com">ashida.shin@gmail.com</a><h3>
+</section>
+
+<section>
+<section id="slide-org2c64877">
+<h2 id="org2c64877">Java 8?</h2>
+<div class="outline-text-2" id="text-org2c64877">
+</div></section>
+<section id="slide-org1f5f436">
+<h3 id="org1f5f436">Introducción, por qué Java 8 ?</h3>
+<ul>
+<li>Abstración!</li>
+<li>Código menos ofuscado</li>
+<li>Mucho más fácil de leer</li>
+<li>Olvidaos de los bucles!</li>
+<li>Flexibilidad</li>
+<li>El código se basa en la manipulación del dato, facilitemos eso!</li>
+<li>Más óptimo</li>
+
+</ul>
+</section>
+<section id="slide-orge27e21b">
+<h3 id="orge27e21b">Ahora empecemos&#x2026;</h3>
+<ul>
+<li>Lambdas</li>
+<li>Streams</li>
+<li><p>
+Optionals
+</p></li>
+
+</ul>
+
+<div class="figure">
+<p><img src="./etoqueeh.jpg" alt="etoqueeh.jpg" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org211c6ee">
+<h2 id="org211c6ee">lambdas?</h2>
+<div class="outline-text-2" id="text-org211c6ee">
+</div></section>
+<section id="slide-org1a47062">
+<h3 id="org1a47062">Que son?</h3>
+<p>
+Funciones sin nombre, anonimas, lambda functions.
+</p>
+
+<div class="figure">
+<p><img src="./lambda.jpg" alt="lambda.jpg" />
+</p>
+</div>
+</section>
+<section id="slide-orgc2499f6">
+<h3 id="orgc2499f6">but&#x2026; why?</h3>
+<p>
+Antes de java 8:
+</p>
+<ul>
+<li>Crear objeto con el código a ejecutar</li>
+<li>Pasar el objeto</li>
+<li>Usar algún tipo de diseño que permita eso</li>
+
+</ul>
+<p>
+Después de java 8:
+</p>
+<ul>
+<li>Crear bloque de código</li>
+<li>Pasarlo como argumento</li>
+
+</ul>
+</section>
+<section id="slide-org10bfd24">
+<h3 id="org10bfd24">Compara&#x2026; Java 7&#x2026;</h3>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Person</span>&gt; <span style="color: #ffcc66;">people</span> = loadPeople();
+Collections.sort(people, <span style="color: #99cc99;">new</span> <span style="color: #6699cc;">Comparator</span>&lt;<span style="color: #6699cc;">Person</span>&gt;(){
+    <span style="color: #6699cc;">@Override</span>
+    <span style="color: #99cc99;">public</span> <span style="color: #6699cc;">int</span> <span style="color: #f99157;">compare</span> (<span style="color: #6699cc;">Person</span> <span style="color: #ffcc66;">p1</span>, <span style="color: #6699cc;">Person</span> <span style="color: #ffcc66;">p2</span>){
+        <span style="color: #99cc99;">return</span> p1.name.compareTo(p2.name)
+    }
+})
+</pre>
+</div>
+</section>
+<section id="slide-orgb5d8de8">
+<h3 id="orgb5d8de8">le transform</h3>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Person</span>&gt; <span style="color: #ffcc66;">people</span> = loadPeople();
+Collections.sort(people, 
+    (<span style="color: #6699cc;">Person</span> <span style="color: #ffcc66;">p1</span>, <span style="color: #6699cc;">Person</span> <span style="color: #ffcc66;">p2</span>) -&gt; p1.name.compareTo(p2.name)
+)
+</pre>
+</div>
+
+</section>
+<section id="slide-orgb25ec64">
+<h3 id="orgb25ec64">meh</h3>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Person</span>&gt; <span style="color: #ffcc66;">people</span> = loadPeople();
+Collections.sort(people, 
+    (p1, p2) -&gt; p1.name.compareTo(p2.name)
+);
+</pre>
+</div>
+</section>
+<section id="slide-org47e7af9">
+<h3 id="org47e7af9">Java 8</h3>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Person</span>&gt; <span style="color: #ffcc66;">people</span> = loadPeople();
+people.sort(p1, p2) -&gt; p1.name.compareTo(p2.name));
+</pre>
+</div>
+
+</section>
+<section id="slide-orgca6cfb2">
+<h3 id="orgca6cfb2">lambdas, buenas prácticas!</h3>
+<ul class="fragment roll in">
+<li>No usar paréntesis si solo hay un parámetro</li>
+<li>No usar finals</li>
+<li>No usar bloques!</li>
+
+</ul>
+</section>
+<section id="slide-org537e81a">
+<h3 id="org537e81a">Más ejemplos!</h3>
+<div class="org-src-container">
+
+<pre  class="src src-java">(<span style="color: #6699cc;">int</span> <span style="color: #ffcc66;">a</span>, <span style="color: #6699cc;">int</span> <span style="color: #ffcc66;">b</span>) &#173;&gt;  a + b
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre  class="src src-java">(<span style="color: #6699cc;">int</span> <span style="color: #ffcc66;">a</span>) &#173;&gt; a +  1
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre  class="src src-java">(<span style="color: #6699cc;">int</span>  <span style="color: #ffcc66;">a</span>, <span style="color: #6699cc;">int</span> <span style="color: #ffcc66;">b</span>) &#173;&gt; { System.out.println(a + b);  <span style="color: #99cc99;">return</span> a + b; }
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre  class="src src-java">() &#173;&gt; <span style="color: #99cc99;">new</span> <span style="color: #6699cc;">ArrayList</span>()
+</pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org24d6c03">
+<h2 id="org24d6c03">streams?</h2>
+<div class="outline-text-2" id="text-org24d6c03">
+</div></section>
+<section id="slide-orgfdf0995">
+<h3 id="orgfdf0995">Que son?</h3>
+<p>
+Un Stream es un modo de aplicar transformaciones a una secuencia de
+elementos, por ejemplo una lista o datos a traves de la red (GET
+HTTP), aplicando todas las transformaciones a la vez, elemento a
+elemento.
+</p>
+</section>
+<section id="slide-org4c97e00">
+<h3 id="org4c97e00">Vamos a verlo mejor</h3>
+
+<div class="figure">
+<p><img src="./streams.jpg" alt="streams.jpg" />
+</p>
+</div>
+</section>
+<section id="slide-org5eabe2c">
+<h3 id="org5eabe2c">but&#x2026; again, why?</h3>
+<p>
+Antes de Java 8:
+</p>
+<ul>
+<li>Tener una lista de elementos</li>
+<li>Recorrerla una vez para aplicar una transformación</li>
+<li>Recorrerla otra vez para aplicar otra transformación</li>
+<li>Recor&#x2026;. WUT</li>
+<li>Pensar en una lógica de iteraccion para ahorrar repetir operaciones</li>
+
+</ul>
+<p>
+Después de Java 8:
+</p>
+<ul>
+<li>Tener una lista de elementos</li>
+<li>Definir las transformaciones</li>
+<li>Ejecutar una vez :D</li>
+<li>No necesitamos pensar en una lógica muy complicada, nos abstrae de eso</li>
+
+</ul>
+</section>
+<section id="slide-orge1a96f0">
+<h3 id="orge1a96f0">Veamos un ejemplo</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 7</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">String</span>&gt; <span style="color: #ffcc66;">names</span> = <span style="color: #99cc99;">new</span> <span style="color: #6699cc;">ArrayList</span>&lt;&gt;();
+<span style="color: #99cc99;">for</span> (<span style="color: #6699cc;">Student</span> <span style="color: #ffcc66;">student</span> : students) {
+    <span style="color: #99cc99;">if</span>(student.getName().startsWith(<span style="color: #66cccc;">"A"</span>)){
+        names.add(student.getName());
+    }
+}
+</pre>
+</div>
+</div>
+<div class="column" style="float:right; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 8</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">string</span>&gt; <span style="color: #ffcc66;">names</span> = students.stream()
+          .map(Student::getName)
+          .filter(name-&gt;name.startsWith(<span style="color: #66cccc;">"A"</span>))
+          .collect(Collectors.toList());
+</pre>
+</div>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org44f98d0">
+<h2 id="org44f98d0">optionals?</h2>
+<div class="outline-text-2" id="text-org44f98d0">
+</div></section>
+<section id="slide-orgc528335">
+<h3 id="orgc528335">Qué son?</h3>
+<p>
+Los Optionals, como su palabra dicen son un objeto que puede contener
+o no un valor no nulo.
+Este mola mucho.
+</p>
+
+<div class="figure">
+<p><img src="./Optional.gif" alt="Optional.gif" />
+</p>
+</div>
+</section>
+<section id="slide-org69dde57">
+<h3 id="org69dde57">Utilidad ?</h3>
+<ul>
+<li>No más NullPointer!</li>
+<li>Centrarnos en los detalles de nuestro programa</li>
+<li>Código más bonico</li>
+
+</ul>
+</section>
+<section id="slide-orgcf0e5d5">
+<h3 id="orgcf0e5d5">Como se usa?!</h3>
+<ul>
+<li class="fragment roll"></li>
+
+<li class="fragment in">.get()</li>
+<li class="fragment in">.orElse()</li>
+<li class="fragment in">.orElseGet()</li>
+
+</ul>
+</section>
+<section id="slide-org174eb81">
+<h3 id="org174eb81">Veamos un ejemplo</h3>
+<div class="org-src-container">
+
+<pre  class="src src-java">article.filter(a -&gt; newerThanAMonth(a))  
+       .orElseGet(() -&gt; getNewestArticle());
+</pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orga0a196c">
+<h2 id="orga0a196c">Think in functional</h2>
+<div class="outline-text-2" id="text-orga0a196c">
+</div></section>
+<section id="slide-org773ba49">
+<h3 id="org773ba49">Funciones!</h3>
+<p>
+<b><font color = "cyan">forEach</font></b>
+</p>
+<ul>
+<li>map</li>
+<li>filter</li>
+<li>collect</li>
+<li>limit</li>
+<li>sorted</li>
+<li>flatMap</li>
+
+</ul>
+</section>
+<section id="slide-org262d619">
+<h3 id="org262d619">forEach</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 7</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">Imprimimos cada elemento</span>
+<span style="color: #99cc99;">for</span> (<span style="color: #6699cc;">int</span> <span style="color: #ffcc66;">i</span> = 0; i &lt; list.<span style="color: #6699cc;">size</span>(); i++) {
+      System.out.println(list.get(i));
+}
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 8</font></b> 
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">Imprimimos cada elemento</span>
+list.forEach(elemento -&gt; 
+             System.out.println(elemento)
+);
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">Imprimimos cada elemento</span>
+list.forEach(System.out::println);
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgbd1f702">
+<h3 id="orgbd1f702">Funciones!</h3>
+<ul>
+<li>forEach</li>
+
+</ul>
+<p>
+<b><font color = "cyan">map</font></b>
+</p>
+<ul>
+<li>filter</li>
+<li>collect</li>
+<li>limit</li>
+<li>sorted</li>
+<li>flatMap</li>
+
+</ul>
+</section>
+<section id="slide-orgcaa0e7c">
+<h3 id="orgcaa0e7c">map</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 7</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">result</span> = 
+   <span style="color: #99cc99;">new</span> <span style="color: #6699cc;">ArrayList</span>&lt;<span style="color: #6699cc;">Integer</span>&gt;();
+<span style="color: #99cc99;">for</span> (<span style="color: #6699cc;">Integer</span> <span style="color: #ffcc66;">digit</span> : numbers) {
+    result.add(digit * digit);
+}
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 8</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">squaresList</span> = numbers
+    .stream()
+    .map( i -&gt; i*i)
+    .collect(Collectors.toList());
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orga88658a">
+<h3 id="orga88658a">Funciones!</h3>
+<ul>
+<li>forEach</li>
+<li>map</li>
+
+</ul>
+<p>
+<b><font color = "cyan">filter</font></b>
+</p>
+<ul>
+<li>collect</li>
+<li>limit</li>
+<li>sorted</li>
+<li>flatMap</li>
+
+</ul>
+</section>
+<section id="slide-org8ec278c">
+<h3 id="org8ec278c">filter</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 7</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">Iterator</span>&lt;<span style="color: #6699cc;">Car</span>&gt; <span style="color: #ffcc66;">carsIterator</span> = cars.iterator();
+<span style="color: #6699cc;">int</span> <span style="color: #ffcc66;">cont</span> = 0;
+    <span style="color: #99cc99;">while</span> (carsIterator.hasNext()) {
+        <span style="color: #6699cc;">Car</span> <span style="color: #ffcc66;">c</span> = carsIterator.next();
+        <span style="color: #99cc99;">if</span> (c.getCarColor() == <span style="color: #6699cc;">Color</span>.BLUE) {
+            cont ++;
+        }
+    }
+}
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 8</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">get count of empty string</span>
+<span style="color: #6699cc;">int</span> <span style="color: #ffcc66;">count</span> = cars.stream()
+    .filter(car -&gt; 
+      car.getColor().equals(<span style="color: #6699cc;">Color</span>.Blue))
+      .count();
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgc3714ce">
+<h3 id="orgc3714ce">Funciones!</h3>
+<ul>
+<li>forEach</li>
+<li>map</li>
+<li>filter</li>
+
+</ul>
+<p>
+<b><font color = "cyan">limit</font></b>
+</p>
+<ul>
+<li>limit</li>
+<li>sorted</li>
+<li>flatMap</li>
+
+</ul>
+</section>
+<section id="slide-org2dca513">
+<h3 id="org2dca513">collect</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 7</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">result</span> = <span style="color: #99cc99;">new</span> <span style="color: #6699cc;">ArrayList</span>&lt;<span style="color: #6699cc;">Integer</span>&gt;();
+<span style="color: #99cc99;">for</span> (<span style="color: #6699cc;">Integer</span> <span style="color: #ffcc66;">digit</span> : numbers) {
+        result.add(digit * digit);
+}
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 8</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">Function</span>&lt;<span style="color: #6699cc;">Integer</span>, <span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">square</span>=x -&gt; x*x;
+<span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">squareNumbers</span> = numbers
+.stream()
+.map(square)
+       .collect(Collectors.toList());
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-org5d511eb">
+<h3 id="org5d511eb">Funciones!</h3>
+<ul>
+<li>forEach</li>
+<li>map</li>
+
+</ul>
+<p>
+<b><font color = "cyan">limit</font></b>
+</p>
+<ul>
+<li>sorted</li>
+<li>filter</li>
+<li>flatMap</li>
+
+</ul>
+</section>
+<section id="slide-org521ada5">
+<h3 id="org521ada5">limit</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 7</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #99cc99;">for</span>(<span style="color: #6699cc;">int</span> <span style="color: #ffcc66;">i</span> = 0; i &lt;= 10; i++) {
+    <span style="color: #6699cc;">Random</span> <span style="color: #ffcc66;">rnd</span> = <span style="color: #99cc99;">new</span> <span style="color: #6699cc;">Random</span>();
+    System.out.println(rnd.nextInt());
+}
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 8</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">Random</span> <span style="color: #ffcc66;">random</span> = <span style="color: #99cc99;">new</span> <span style="color: #6699cc;">Random</span>();
+random.ints().limit(10)
+.forEach(System.out::println);
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-org9d311cb">
+<h3 id="org9d311cb">Funciones!</h3>
+<ul>
+<li>forEach</li>
+<li>map</li>
+<li>filter</li>
+<li>collect</li>
+<li>limit</li>
+
+</ul>
+<p>
+<b><font color = "cyan">sorted</font></b>
+</p>
+<ul>
+<li>flatMap</li>
+
+</ul>
+</section>
+<section id="slide-orgae63655">
+<h3 id="orgae63655">sorted</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 7</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java">Collections.sort(
+       nList, 
+       Collections.reverseOrder()); 
+<span style="color: #99cc99;">for</span>(<span style="color: #6699cc;">int</span> <span style="color: #ffcc66;">n</span>: nList) {
+    System.out.println(n);
+}
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 8</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java">random.ints()
+      .limit(10)
+      .sorted()
+      .forEach(System.out::println);
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orga945db8">
+<h3 id="orga945db8">Funciones!</h3>
+<ul>
+<li>forEach</li>
+<li>map</li>
+<li>filter</li>
+<li>collect</li>
+<li>limit</li>
+<li>sorted</li>
+
+</ul>
+<p>
+<b><font color = "cyan">flatMap</font></b>
+</p>
+</section>
+<section id="slide-orge2befe2">
+<h3 id="orge2befe2">flatMap</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 7</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt;&gt; <span style="color: #ffcc66;">integerLists</span> = 
+Arrays.asList(
+  Arrays.asList(1, 2), 
+  Arrays.asList(3, 4), 
+  Arrays.asList(5)
+)
+
+<span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; flattened = <span style="color: #99cc99;">new</span> <span style="color: #6699cc;">ArrayList</span>&lt;&gt;();
+
+<span style="color: #99cc99;">for</span>(<span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">integerList</span> : integerLists)
+{
+  flattened.addAll(integerList);
+}
+
+<span style="color: #99cc99;">for</span> (<span style="color: #6699cc;">Integer</span> <span style="color: #ffcc66;">i</span> : flattened)
+{
+  System.out.println(i);
+}
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+<b><font color = "cyan">JAVA 8</font></b>
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">List((1,2), (3, 4), (5))</span>
+<span style="color: #6699cc;">Stream</span>&lt;<span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt;&gt; <span style="color: #ffcc66;">integerListStream</span> = 
+Stream.of(
+  Arrays.asList(1, 2), 
+  Arrays.asList(3, 4), 
+  Arrays.asList(5)
+);
+<span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">List(1, 2, 3, 4, 5)</span>
+<span style="color: #6699cc;">Stream</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">integerStream</span> = 
+integerListStream
+             .flatMap(Collection::stream)
+             .forEach(System.out::println);
+</pre>
+</div>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org270c422">
+<h2 id="org270c422">Composition!!</h2>
+<div class="outline-text-2" id="text-org270c422">
+</div></section>
+<section id="slide-org7cf685a">
+<h3 id="org7cf685a">Que es?</h3>
+<p>
+Composición?
+Es la unión de varias de las anteriores funciones, como ya hemos visto
+en algunos de los ejemplos. 
+Pero no solo eso, también funcionan con los optionals!
+</p>
+
+<div class="figure">
+<p><img src="./giphy.gif" alt="giphy.gif" />
+</p>
+</div>
+</section>
+<section id="slide-orgfbdfc6c">
+<h3 id="orgfbdfc6c">Veamos algunos ejemplos normales</h3>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">Imaginemos que tenemos una lista "list" de elementos del 0 al 9</span>
+<span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+<span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">lSquare</span> = 
+list.map(numero -&gt; numero*numero).collect(Collectors.toList());
+
+<span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">lFiltradaPar</span> = 
+lSquare.filter(numero -&gt; numero % 2 ==0).collect(Collectors.toList());
+
+<span style="color: #999999; font-style: italic;">// </span><span style="color: #999999; font-style: italic;">SE pueden unir</span>
+<span style="color: #6699cc;">List</span>&lt;<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">lUnidas</span> = 
+list
+   .map(numero -&gt; numero*numero)
+   .filter(numero -&gt; numero % 2 == 0)
+   .collect(Collectors.toList());
+</pre>
+</div>
+</section>
+<section id="slide-org9bd5366">
+<h3 id="org9bd5366">Como componer funciones</h3>
+<p>
+Si tu tienes una función  tal que
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">Function</span>&lt;<span style="color: #6699cc;">Integer</span>,<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">add3</span>   = (a) -&gt; a + 3 ;
+</pre>
+</div>
+<p>
+y otra que
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">Function</span>&lt;<span style="color: #6699cc;">Integer</span>,<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">times2</span> = (a) -&gt; a * 2 ;
+</pre>
+</div>
+<p>
+Puedes "unirlas", componerlas, decir que la salida de una, sea la
+entrada de la otra
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #6699cc;">Function</span>&lt;<span style="color: #6699cc;">Integer</span>,<span style="color: #6699cc;">Integer</span>&gt; <span style="color: #ffcc66;">composedA</span> = add3.compose( times2 ) ;
+</pre>
+</div>
+</section>
+<section id="slide-orgb31be4b">
+<h3 id="orgb31be4b">Ahora con optionals</h3>
+<div class="outline-text-3" id="text-orgb31be4b">
+</div></section>
+<section id="slide-org8ea6677">
+<h4 id="org8ea6677">Java 7</h4>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #99cc99;">if</span>(opt.isPresent() &amp;&amp; opt.get().contains(<span style="color: #66cccc;">"ab"</span>)) {
+    System.out.println(opt.get());
+}
+</pre>
+</div>
+</section>
+<section id="slide-orgf735362">
+<h4 id="orgf735362">Java 8 con optionals</h4>
+<div class="org-src-container">
+
+<pre  class="src src-java">opt.
+   filter(x -&gt; x.contains(<span style="color: #66cccc;">"ab"</span>)).
+   ifPresent(System.out::println);
+</pre>
+</div>
+</section>
+<section id="slide-org1f9acc9">
+<h4 id="org1f9acc9">Java 8 con flatMaps</h4>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">Imagina una funcion que no puede recibir un null </span>
+<span style="color: #99cc99;">public</span> <span style="color: #6699cc;">String</span> <span style="color: #f99157;">findSimilar</span>(<span style="color: #6699cc;">@NotNull</span> <span style="color: #6699cc;">String</span> <span style="color: #ffcc66;">s</span>) <span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">...</span>
+<span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">Para usarla seria...</span>
+String similarOrNull = x != <span style="color: #6699cc;">null</span>? findSimilar(x) : <span style="color: #6699cc;">null</span>;
+<span style="color: #999999; font-style: italic;">// </span><span style="color: #999999; font-style: italic;">Con map ...</span>
+<span style="color: #6699cc;">Optional</span>&lt;<span style="color: #6699cc;">String</span>&gt; <span style="color: #ffcc66;">similar</span> = opt.map(<span style="color: #99cc99;">this</span>::findSimilar);
+<span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">Esto devolveria un null si contiene null y si no lo ejecutaria pero... </span>
+<span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">tenemos Optionals</span>
+<span style="color: #99cc99;">public</span> <span style="color: #6699cc;">Optional</span>&lt;<span style="color: #6699cc;">String</span>&gt; <span style="color: #f99157;">tryFindSimilar</span>(<span style="color: #6699cc;">String</span> <span style="color: #ffcc66;">s</span>)  <span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">...</span>
+<span style="color: #999999; font-style: italic;">//</span><span style="color: #999999; font-style: italic;">Usando el map aqui nos daria un optional de optional por eso</span>
+<span style="color: #6699cc;">Optional</span>&lt;<span style="color: #6699cc;">Optional</span>&lt;<span style="color: #6699cc;">String</span>&gt;&gt; bad = opt.map(<span style="color: #99cc99;">this</span>::tryFindSimilar);
+<span style="color: #6699cc;">Optional</span>&lt;<span style="color: #6699cc;">String</span>&gt; <span style="color: #ffcc66;">similar</span> =       opt.flatMap(<span style="color: #99cc99;">this</span>::tryFindSimilar);
+</pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org489c0d0">
+<h2 id="org489c0d0">Exercises</h2>
+</section>
+</section>
+<section>
+<section id="slide-orgc87e3a4">
+<h2 id="orgc87e3a4">Resumen</h2>
+<ul>
+<li>Java 8 rules!</li>
+<li>Puede parecer muy diferente al principio</li>
+<li>Vital para rediseñar tu código y mejorarlo</li>
+<li>Aprende funcional, te facilitará tu forma de programar, de pensar y
+de vivir!</li>
+
+</ul>
+
+<div class="figure">
+<p><img src="./functional.jpg" alt="functional.jpg" width="300px" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgf32b0c4">
+<h2 id="orgf32b0c4">ty!</h2>
+<p>
+ACM y [ACM-SIG] Scala<br  />
+Roberto Sarmiento (Todos me llaman Ashida so&#x2026; Ashida xD)<br  />
+Telegram: @Ashida<br  />
+<img src="./ACM.png" alt="ACM.png" />
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="file:////home/ashida/git/reveal.js/lib/js/head.min.js"></script>
+<script src="file:////home/ashida/git/reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'h/v',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'file:////home/ashida/git/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'file:////home/ashida/git/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'file:////home/ashida/git/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'file:////home/ashida/git/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: '', async: true },
+ { src: 'file:////home/ashida/git/reveal.js/plugin/multiplex/master.js', async: true },
+ { src: 'file:////home/ashida/git/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } }]
+});
+</script>
+</body>
+</html>

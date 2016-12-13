@@ -27,16 +27,156 @@
 # Read: https://github.com/yjwen/org-reveal/
 # s para modo por
 
-* for vs forEach
-#+begin_src java
-//Creamos una lista de elemtos
-ArrayList<String> list = new ArrayList<String>() {{
-      add("A");
-      add("B");
-      add("C");
-      add("D");
-    }};;
-#+end_src
+*  Java 8?
+** Introducción, por qué Java 8 ?
+- Abstración!
+- Código menos ofuscado
+- Mucho más fácil de leer
+- Olvidaos de los bucles!
+- Flexibilidad
+- El código se basa en la manipulación del dato, facilitemos eso!
+- Más óptimo
+** Ahora empecemos...
+- Lambdas
+- Streams
+- Optionals
+ #+ATTR_HTML: :al:align right
+[[./etoqueeh.jpg]]
+* lambdas?
+** Que son?
+Funciones sin nombre, anonimas, lambda functions.
+ #+ATTR_HTML: :al:align right
+[[./lambda.jpg]]
+** but... why?
+Antes de java 8:
+- Crear objeto con el código a ejecutar
+- Pasar el objeto
+- Usar algún tipo de diseño que permita eso
+Después de java 8:
+- Crear bloque de código
+- Pasarlo como argumento
+** Compara... Java 7...
+#+BEGIN_SRC java 
+List<Person> people = loadPeople();
+Collections.sort(people, new Comparator<Person>(){
+    @Override
+    public int compare (Person p1, Person p2){
+        return p1.name.compareTo(p2.name)
+    }
+})
+  #+END_SRC
+** le transform
+#+BEGIN_SRC java 
+List<Person> people = loadPeople();
+Collections.sort(people, 
+    (Person p1, Person p2) -> p1.name.compareTo(p2.name)
+)
+#+END_SRC
+
+** meh
+#+BEGIN_SRC java 
+List<Person> people = loadPeople();
+Collections.sort(people, 
+    (p1, p2) -> p1.name.compareTo(p2.name)
+);
+#+END_SRC
+** Java 8
+#+BEGIN_SRC java 
+ List<Person> people = loadPeople();
+ people.sort(p1, p2) -> p1.name.compareTo(p2.name));
+ #+END_SRC
+
+** lambdas, buenas prácticas!
+#+ATTR_REVEAL: :frag roll in
+- No usar paréntesis si solo hay un parámetro
+- No usar finals
+- No usar bloques!
+** Más ejemplos!
+#+BEGIN_SRC java 
+(int a, int b) ­>  a + b
+#+END_SRC
+#+BEGIN_SRC java 
+(int a) ­> a +  1
+#+END_SRC
+#+BEGIN_SRC java 
+(int  a, int b) ­> { System.out.println(a + b);  return a + b; } 
+#+END_SRC
+#+BEGIN_SRC java 
+() ­> new ArrayList()
+#+END_SRC
+* streams?
+** Que son?
+Un Stream es un modo de aplicar transformaciones a una secuencia de
+elementos, por ejemplo una lista o datos a traves de la red (GET
+HTTP), aplicando todas las transformaciones a la vez, elemento a
+elemento.
+** Vamos a verlo mejor
+[[./streams.jpg]]
+** but... again, why?
+Antes de Java 8:
+- Tener una lista de elementos
+- Recorrerla una vez para aplicar una transformación
+- Recorrerla otra vez para aplicar otra transformación
+- Recor.... WUT
+- Pensar en una lógica de iteraccion para ahorrar repetir operaciones
+Después de Java 8:
+- Tener una lista de elementos
+- Definir las transformaciones
+- Ejecutar una vez :D
+- No necesitamos pensar en una lógica muy complicada, nos abstrae de eso
+** Veamos un ejemplo
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 7@@html:</font>@@*
+#+BEGIN_SRC java
+List<String> names = new ArrayList<>();
+for (Student student : students) {
+    if(student.getName().startsWith("A")){
+        names.add(student.getName());
+    }
+}
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:right; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 8@@html:</font>@@*
+#+BEGIN_SRC java
+List<string> names = students.stream()
+          .map(Student::getName)
+          .filter(name->name.startsWith("A"))
+          .collect(Collectors.toList());
+#+END_SRC
+#+REVEAL_HTML: </div>
+* optionals?
+** Qué son?
+Los Optionals, como su palabra dicen son un objeto que puede contener
+o no un valor no nulo.
+Este mola mucho.
+ #+ATTR_HTML: :al:align right
+[[./Optional.gif]]
+** Utilidad ?
+- No más NullPointer!
+- Centrarnos en los detalles de nuestro programa
+- Código más bonico
+** Como se usa?!
+ #+ATTR_REVEAL: :frag (roll in)
+- 
+-  .get()
+-  .orElse()
+-  .orElseGet()
+** Veamos un ejemplo
+#+BEGIN_SRC java
+article.filter(a -> newerThanAMonth(a))  
+       .orElseGet(() -> getNewestArticle());
+#+END_SRC
+* Think in functional
+** Funciones!
+ *@@html:<font color = "cyan">@@forEach@@html:</font>@@*
+ - map
+ - filter
+ - collect
+ - limit
+ - sorted
+ - flatMap
+** forEach
 #+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
 *@@html:<font color = "cyan">@@JAVA 7@@html:</font>@@*
 #+BEGIN_SRC java 
@@ -44,7 +184,7 @@ ArrayList<String> list = new ArrayList<String>() {{
 for (int i = 0; i < list.size(); i++) {
       System.out.println(list.get(i));
 }
-  #+END_SRC
+  #+END_SRC 
 #+REVEAL_HTML: </div>
 #+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
 *@@html:<font color = "cyan">@@JAVA 8@@html:</font>@@* 
@@ -58,9 +198,280 @@ list.forEach(elemento ->
 //Imprimimos cada elemento
 list.forEach(System.out::println);
   #+END_SRC
+#+REVEAL_HTML: </div>              
+** Funciones!
+- forEach
+*@@html:<font color = "cyan">@@map@@html:</font>@@*
+ - filter
+ - collect
+ - limit
+ - sorted
+ - flatMap
+** map
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 7@@html:</font>@@*
+#+BEGIN_SRC java
+List<Integer> result = 
+   new ArrayList<Integer>();
+for (Integer digit : numbers) {
+    result.add(digit * digit);
+}
+#+END_SRC 
 #+REVEAL_HTML: </div>
-** eys 2
-* Oys
-** eys 4
-* Uys
-** eys 4B
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 8@@html:</font>@@*
+#+BEGIN_SRC java 
+List<Integer> squaresList = numbers
+    .stream()
+    .map( i -> i*i)
+    .collect(Collectors.toList());
+#+END_SRC 
+#+REVEAL_HTML: </div>
+** Funciones!
+ - forEach
+ - map
+*@@html:<font color = "cyan">@@filter@@html:</font>@@*
+ - collect
+ - limit
+ - sorted
+ - flatMap
+** filter
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 7@@html:</font>@@*
+#+BEGIN_SRC java
+Iterator<Car> carsIterator = cars.iterator();
+int cont = 0;
+    while (carsIterator.hasNext()) {
+        Car c = carsIterator.next();
+        if (c.getCarColor() == Color.BLUE) {
+            cont ++;
+        }
+    }
+}
+#+END_SRC 
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 8@@html:</font>@@*
+#+BEGIN_SRC java 
+//get count of empty string
+int count = cars.stream()
+    .filter(car -> 
+      car.getColor().equals(Color.Blue))
+      .count();
+#+END_SRC 
+#+REVEAL_HTML: </div>
+** Funciones!
+ - forEach
+ - map
+ - filter
+*@@html:<font color = "cyan">@@limit@@html:</font>@@*
+ - limit
+ - sorted
+ - flatMap
+** collect
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 7@@html:</font>@@*
+#+BEGIN_SRC java
+List<Integer> result = new ArrayList<Integer>();
+for (Integer digit : numbers) {
+        result.add(digit * digit);
+}
+#+END_SRC 
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 8@@html:</font>@@*
+#+BEGIN_SRC java 
+Function<Integer, Integer> square=x -> x*x;
+List<Integer> squareNumbers = numbers
+.stream()
+.map(square)
+       .collect(Collectors.toList());
+#+END_SRC 
+#+REVEAL_HTML: </div>
+** Funciones!
+ - forEach
+ - map
+*@@html:<font color = "cyan">@@limit@@html:</font>@@*
+ - sorted
+ - filter
+ - flatMap
+** limit
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 7@@html:</font>@@*
+#+BEGIN_SRC java
+for(int i = 0; i <= 10; i++) {
+    Random rnd = new Random();
+    System.out.println(rnd.nextInt());
+}
+#+END_SRC 
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 8@@html:</font>@@*
+#+BEGIN_SRC java 
+Random random = new Random();
+random.ints().limit(10)
+.forEach(System.out::println);
+#+END_SRC 
+#+REVEAL_HTML: </div>
+** Funciones!
+ - forEach
+ - map
+ - filter
+ - collect
+ - limit
+ *@@html:<font color = "cyan">@@sorted@@html:</font>@@*
+ - flatMap
+** sorted
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 7@@html:</font>@@*
+#+BEGIN_SRC java
+Collections.sort(
+       nList, 
+       Collections.reverseOrder()); 
+for(int n: nList) {
+    System.out.println(n);
+}
+#+END_SRC 
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 8@@html:</font>@@*
+#+BEGIN_SRC java 
+random.ints()
+      .limit(10)
+      .sorted()
+      .forEach(System.out::println);
+#+END_SRC 
+#+REVEAL_HTML: </div>
+** Funciones!
+ - forEach
+ - map
+ - filter
+ - collect
+ - limit
+ - sorted
+*@@html:<font color = "cyan">@@flatMap@@html:</font>@@*
+** flatMap
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 7@@html:</font>@@*
+#+BEGIN_SRC java
+List<List<Integer>> integerLists = 
+Arrays.asList(
+  Arrays.asList(1, 2), 
+  Arrays.asList(3, 4), 
+  Arrays.asList(5)
+)
+
+List<Integer> flattened = new ArrayList<>();
+
+for(List<Integer> integerList : integerLists)
+{
+  flattened.addAll(integerList);
+}
+
+for (Integer i : flattened)
+{
+  System.out.println(i);
+}
+#+END_SRC 
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+*@@html:<font color = "cyan">@@JAVA 8@@html:</font>@@*
+#+BEGIN_SRC java 
+//List((1,2), (3, 4), (5))
+Stream<List<Integer>> integerListStream = 
+Stream.of(
+  Arrays.asList(1, 2), 
+  Arrays.asList(3, 4), 
+  Arrays.asList(5)
+);
+//List(1, 2, 3, 4, 5)
+Stream<Integer> integerStream = 
+integerListStream
+             .flatMap(Collection::stream)
+             .forEach(System.out::println);
+#+END_SRC 
+#+REVEAL_HTML: </div>
+* Composition!!
+** Que es?
+Composición?
+Es la unión de varias de las anteriores funciones, como ya hemos visto
+en algunos de los ejemplos. 
+Pero no solo eso, también funcionan con los optionals!
+#+ATTR_HTML: :al:align right
+[[./giphy.gif]]
+** Veamos algunos ejemplos normales
+#+begin_src java
+//Imaginemos que tenemos una lista "list" de elementos del 0 al 9
+//[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+List<Integer> lSquare = 
+list.map(numero -> numero*numero).collect(Collectors.toList());
+
+List<Integer> lFiltradaPar = 
+lSquare.filter(numero -> numero % 2 ==0).collect(Collectors.toList());
+
+// SE pueden unir
+List<Integer> lUnidas = 
+list
+   .map(numero -> numero*numero)
+   .filter(numero -> numero % 2 == 0)
+   .collect(Collectors.toList());
+#+end_src
+** Como componer funciones
+Si tu tienes una función  tal que
+#+begin_src java
+Function<Integer,Integer> add3   = (a) -> a + 3 ;
+#+end_src
+y otra que
+#+begin_src java
+Function<Integer,Integer> times2 = (a) -> a * 2 ;
+#+end_src
+Puedes "unirlas", componerlas, decir que la salida de una, sea la
+entrada de la otra
+#+begin_src java
+Function<Integer,Integer> composedA = add3.compose( times2 ) ;
+#+end_src
+** Ahora con optionals
+*** Java 7
+#+begin_src java
+if(opt.isPresent() && opt.get().contains("ab")) {
+    System.out.println(opt.get());
+}
+#+end_src
+*** Java 8 con optionals
+#+begin_src java
+opt.
+   filter(x -> x.contains("ab")).
+   ifPresent(System.out::println);
+#+end_src
+*** Java 8 con flatMaps
+#+begin_src java
+//Imagina una funcion que no puede recibir un null 
+public String findSimilar(@NotNull String s) //...
+//Para usarla seria...
+String similarOrNull = x != null? findSimilar(x) : null;
+// Con map ...
+Optional<String> similar = opt.map(this::findSimilar);
+//Esto devolveria un null si contiene null y si no lo ejecutaria pero... 
+//tenemos Optionals
+public Optional<String> tryFindSimilar(String s)  //...
+//Usando el map aqui nos daria un optional de optional por eso
+Optional<Optional<String>> bad = opt.map(this::tryFindSimilar);
+Optional<String> similar =       opt.flatMap(this::tryFindSimilar);
+#+end_src
+* Exercises
+* Resumen
+- Java 8 rules!
+- Puede parecer muy diferente al principio
+- Vital para rediseñar tu código y mejorarlo
+- Aprende funcional, te facilitará tu forma de programar, de pensar y
+  de vivir!
+#+ATTR_HTML: :al:align right :width 300px
+[[./functional.jpg]]
+* ty!
+  ACM y [ACM-SIG] Scala\\
+  Roberto Sarmiento (Todos me llaman Ashida so... Ashida xD)\\
+  Telegram: @Ashida\\
+  [[./ACM.png]]
+
+
+

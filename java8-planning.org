@@ -1,11 +1,11 @@
-* TODO Planning Java 8 [10%]
-  - [ ] Introducción a Java 8
-  - [ ] Porqué es mejor que Java 7
+* TODO Planning Java 8 [40%]
+  - [X] Introducción a Java 8
+  - [X] Porqué es mejor que Java 7
+  - [X] Funciones Lambda
   - [ ] Map
   - [ ] Filter
-  - [X] ForEach
   - [ ] Flatten
+  - [X] ForEach
   - [ ] FlatMap
-  - [ ] Funciones
-  - [ ] Funciones Lambda
-  - [ ] Funcional en Java 8
+  - [ ] Streams
+  - [ ] Ejercicios
